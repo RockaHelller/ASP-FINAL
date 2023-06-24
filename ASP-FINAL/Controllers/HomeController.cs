@@ -1,5 +1,6 @@
 ﻿using ASP_FINAL.Data;
 using ASP_FINAL.Models;
+using ASP_FINAL.Services.Interfaces;
 using ASP_FINAL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,16 +10,23 @@ namespace ASP_FINAL.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProductService _productService;
 
-        public HomeController(AppDbContext context)
+        public HomeController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
+
         public async Task<IActionResult> Index()
         {
+            var products = await _productService.GetAllWithAsync();
 
-            return View();
+            HomeVM homeVM = new()
+            {
+                Products = products.ToList(),
+            };
+
+            return View(homeVM);
         }
     }
 }

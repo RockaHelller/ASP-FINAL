@@ -4,6 +4,7 @@ namespace ASP_FINAL.ViewModels
 {
     public class HomeVM
     {
-        public List<Slider> Slider;
+        public IEnumerable<Slider> Slider;
+        public IEnumerable<Product> Products { get; set; }
     }
 }
