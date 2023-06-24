@@ -4,6 +4,7 @@ using ASP_FINAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP_FINAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230624162722_CreatedProductTables")]
+    partial class CreatedProductTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,22 +117,6 @@ namespace ASP_FINAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Baskets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "b611a4ac-fc09-4fb7-ba23-d019c0299eaa",
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(7903),
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppUserId = "2e6fbfdc-37de-4b75-b88d-7b25cb4a5e27",
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(7915),
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Brand", b =>
@@ -158,24 +144,6 @@ namespace ASP_FINAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8082),
-                            Image = "01.jpg",
-                            Name = "Vegan Lover",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8084),
-                            Image = "03.jpg",
-                            Name = "Organic Foody",
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Category", b =>
@@ -203,24 +171,6 @@ namespace ASP_FINAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8102),
-                            Image = "01.jpg",
-                            Name = "Vegetables",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8105),
-                            Image = "02.jpg",
-                            Name = "Foods",
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Discount", b =>
@@ -247,24 +197,6 @@ namespace ASP_FINAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Discounts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8123),
-                            Name = "Black Friday",
-                            Percent = (byte)50,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8126),
-                            Name = "No Discount",
-                            Percent = (byte)0,
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Product", b =>
@@ -313,7 +245,7 @@ namespace ASP_FINAL.Migrations
                     b.Property<int>("StockCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubcategoryId")
+                    b.Property<int?>("SubcategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -329,42 +261,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BrandId = 1,
-                            CategoryId = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8143),
-                            Description = "Cucumbers are commonly mistaken for vegetables. But in fact they are fruits, specifically berries. The long, green berries of the cucumber plant are what you usually find in your salads and sandwiches. They are made up of over 90% water, making them excellent for staying hydrated.",
-                            DiscountId = 1,
-                            Name = "Cucumber",
-                            Price = 50m,
-                            RatingId = 1,
-                            SKUCode = 12345,
-                            SalesCount = 80,
-                            SoftDelete = false,
-                            StockCount = 100,
-                            SubcategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BrandId = 2,
-                            CategoryId = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8152),
-                            Description = "The standard eggplant is an oval or pear-shaped, glossy, purplish fruit 6 to 9 inches long. Japanese and oriental varieties tend to be elongated and slender with a thinner, more delicate skin. Ornamental varieties are edible and tend to produce small, white-skinned, oval-shaped fruit.",
-                            DiscountId = 2,
-                            Name = "Eggplant",
-                            Price = 100m,
-                            RatingId = 2,
-                            SKUCode = 54321,
-                            SalesCount = 180,
-                            SoftDelete = false,
-                            StockCount = 200,
-                            SubcategoryId = 2
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.ProductBasket", b =>
@@ -388,20 +284,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductBaskets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BasketId = 1,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BasketId = 2,
-                            ProductId = 2
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.ProductImage", b =>
@@ -433,44 +315,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8192),
-                            Image = "01.jpg",
-                            IsMain = true,
-                            ProductId = 1,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8194),
-                            Image = "02.jpg",
-                            IsMain = false,
-                            ProductId = 1,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8196),
-                            Image = "03.jpg",
-                            IsMain = true,
-                            ProductId = 2,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8197),
-                            Image = "04.jpg",
-                            IsMain = false,
-                            ProductId = 2,
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.ProductTag", b =>
@@ -494,20 +338,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ProductTags");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProductId = 1,
-                            TagId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProductId = 2,
-                            TagId = 2
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.ProductWishList", b =>
@@ -531,20 +361,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("WishListId");
 
                     b.ToTable("ProductWishlists");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProductId = 1,
-                            WishListId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProductId = 2,
-                            WishListId = 2
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Rating", b =>
@@ -567,43 +383,6 @@ namespace ASP_FINAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ratings");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8257),
-                            RatingCount = (byte)1,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8258),
-                            RatingCount = (byte)2,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8260),
-                            RatingCount = (byte)3,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8261),
-                            RatingCount = (byte)4,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8270),
-                            RatingCount = (byte)5,
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Review", b =>
@@ -628,7 +407,7 @@ namespace ASP_FINAL.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RatingId")
+                    b.Property<int?>("RatingId")
                         .HasColumnType("int");
 
                     b.Property<bool>("SoftDelete")
@@ -643,28 +422,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("RatingId");
 
                     b.ToTable("Reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "b611a4ac-fc09-4fb7-ba23-d019c0299eaa",
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8290),
-                            Describe = "Very tasty, it is the best cucumber i have ever eaten.",
-                            ProductId = 1,
-                            RatingId = 1,
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppUserId = "2e6fbfdc-37de-4b75-b88d-7b25cb4a5e27",
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8294),
-                            Describe = "It is a fresh vegetables. I liked it.",
-                            ProductId = 2,
-                            RatingId = 2,
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Setting", b =>
@@ -779,24 +536,6 @@ namespace ASP_FINAL.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8312),
-                            Name = "Cucumber",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8314),
-                            Name = "Eggplant",
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Tag", b =>
@@ -820,113 +559,6 @@ namespace ASP_FINAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tags");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8331),
-                            Name = "Organic",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8333),
-                            Name = "Fruits",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8334),
-                            Name = "Vegan",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8336),
-                            Name = "Healthy",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8337),
-                            Name = "Seafood",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8338),
-                            Name = "Crunchy",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8340),
-                            Name = "Savory",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8341),
-                            Name = "Gourmet",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8342),
-                            Name = "Satisfying",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8344),
-                            Name = "Delicious",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8345),
-                            Name = "Fresh",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8346),
-                            Name = "Juicy",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8347),
-                            Name = "SpiceUp",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8349),
-                            Name = "Tasty",
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8350),
-                            Name = "Zesty",
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.WishList", b =>
@@ -953,22 +585,6 @@ namespace ASP_FINAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Wishlists");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "b611a4ac-fc09-4fb7-ba23-d019c0299eaa",
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8374),
-                            SoftDelete = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppUserId = "2e6fbfdc-37de-4b75-b88d-7b25cb4a5e27",
-                            CreateDate = new DateTime(2023, 6, 24, 20, 36, 47, 382, DateTimeKind.Local).AddTicks(8376),
-                            SoftDelete = false
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1141,11 +757,9 @@ namespace ASP_FINAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ASP_FINAL.Models.Subcategory", "SubCategory")
+                    b.HasOne("ASP_FINAL.Models.Subcategory", null)
                         .WithMany("Products")
-                        .HasForeignKey("SubcategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("SubcategoryId");
 
                     b.Navigation("Brand");
 
@@ -1154,8 +768,6 @@ namespace ASP_FINAL.Migrations
                     b.Navigation("Discount");
 
                     b.Navigation("Rating");
-
-                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.ProductBasket", b =>
@@ -1240,17 +852,13 @@ namespace ASP_FINAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ASP_FINAL.Models.Rating", "Rating")
+                    b.HasOne("ASP_FINAL.Models.Rating", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("RatingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RatingId");
 
                     b.Navigation("AppUser");
 
                     b.Navigation("Product");
-
-                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("ASP_FINAL.Models.Subcategory", b =>
