@@ -6,5 +6,9 @@ namespace ASP_FINAL.ViewModels
     {
         public IEnumerable<Slider> Slider;
         public IEnumerable<Product> Products { get; set; }
+        public Dictionary<string, string> SettingDatas { get; set; }
+        public BlogVM Blog { get; set; }
+
+
     }
 }

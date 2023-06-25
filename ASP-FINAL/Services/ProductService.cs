@@ -1,4 +1,5 @@
-﻿using ASP_FINAL.Data;
+﻿using ASP_FINAL.Areas.Admin.ViewModels.Product;
+using ASP_FINAL.Data;
 using ASP_FINAL.Models;
 using ASP_FINAL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace ASP_FINAL.Services
             _context = context;
         }
 
+
         public async Task<IEnumerable<Product>>  GetAllWithAsync()
         {
             return await _context.Products.Include(m => m.ProductTags).
@@ -24,6 +26,6 @@ namespace ASP_FINAL.Services
                 Include(m => m.Images).ToListAsync();
         }
 
-  
+
     }
 }

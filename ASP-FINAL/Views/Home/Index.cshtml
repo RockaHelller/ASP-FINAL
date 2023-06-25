@@ -1,5 +1,4 @@
-﻿
-@model HomeVM
+﻿@model HomeVM
 
 @{
     ViewData["Title"] = "Home Page";
@@ -153,7 +152,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="promo-img">
-              <a href="#"><img src="~/images/promo/home/03.jpg" alt="promo" /></a>
+              <a href="#"><img src="~/images/promo/home/@Model.SettingDatas["Advertisement"]" alt="promo" /></a>
             </div>
           </div>
         </div>
@@ -1076,12 +1075,12 @@
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
             <div class="promo-img">
-              <a href="#"><img src="~/images/promo/home/01.jpg" alt="promo" /></a>
+                    <a href="#"><img src="~/images/promo/home/@Model.SettingDatas["Promo1"]" alt="promo" /></a>
             </div>
           </div>
           <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
             <div class="promo-img">
-              <a href="#"><img src="~/images/promo/home/02.jpg" alt="promo" /></a>
+              <a href="#"><img src="~/images/promo/home/@Model.SettingDatas["Promo2"]" alt="promo" /></a>
             </div>
           </div>
         </div>
@@ -3336,10 +3335,12 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="blog-slider slider-arrow">
+                @foreach (var item in Model.Blog.Blogs)
+                    {
               <div class="blog-card">
                 <div class="blog-media">
                   <a class="blog-img" href="#"
-                    ><img src="~/images/blog/01.jpg" alt="blog"
+                    ><img src="~/images/blog/@item.Image" alt="blog"
                   /></a>
                 </div>
                 <div class="blog-content">
@@ -3347,111 +3348,25 @@
                     <li><i class="fas fa-user"></i><span>admin</span></li>
                     <li>
                       <i class="fas fa-calendar-alt"></i
-                      ><span>february 02, 2021</span>
+                      ><span>@item.CreateDate</span>
                     </li>
                   </ul>
                   <h4 class="blog-title">
                     <a href="blog-details.html"
-                      >Voluptate blanditiis provident Lorem ipsum dolor sit
-                      amet</a
+                      >@item.Title</a
                     >
                   </h4>
                   <p class="blog-desc">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Alias autem recusandae deleniti nam dignissimos sequi ...
+                    @item.Description
                   </p>
                   <a class="blog-btn" href="#"
                     ><span>read more</span><i class="icofont-arrow-right"></i
                   ></a>
                 </div>
               </div>
-              <div class="blog-card">
-                <div class="blog-media">
-                  <a class="blog-img" href="#"
-                    ><img src="~/images/blog/02.jpg" alt="blog"
-                  /></a>
-                </div>
-                <div class="blog-content">
-                  <ul class="blog-meta">
-                    <li><i class="fas fa-user"></i><span>admin</span></li>
-                    <li>
-                      <i class="fas fa-calendar-alt"></i
-                      ><span>february 02, 2021</span>
-                    </li>
-                  </ul>
-                  <h4 class="blog-title">
-                    <a href="blog-details.html"
-                      >Voluptate blanditiis provident Lorem ipsum dolor sit
-                      amet</a
-                    >
-                  </h4>
-                  <p class="blog-desc">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Alias autem recusandae deleniti nam dignissimos sequi ...
-                  </p>
-                  <a class="blog-btn" href="#"
-                    ><span>read more</span><i class="icofont-arrow-right"></i
-                  ></a>
-                </div>
-              </div>
-              <div class="blog-card">
-                <div class="blog-media">
-                  <a class="blog-img" href="#"
-                    ><img src="~/images/blog/03.jpg" alt="blog"
-                  /></a>
-                </div>
-                <div class="blog-content">
-                  <ul class="blog-meta">
-                    <li><i class="fas fa-user"></i><span>admin</span></li>
-                    <li>
-                      <i class="fas fa-calendar-alt"></i
-                      ><span>february 02, 2021</span>
-                    </li>
-                  </ul>
-                  <h4 class="blog-title">
-                    <a href="blog-details.html"
-                      >Voluptate blanditiis provident Lorem ipsum dolor sit
-                      amet</a
-                    >
-                  </h4>
-                  <p class="blog-desc">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Alias autem recusandae deleniti nam dignissimos sequi ...
-                  </p>
-                  <a class="blog-btn" href="#"
-                    ><span>read more</span><i class="icofont-arrow-right"></i
-                  ></a>
-                </div>
-              </div>
-              <div class="blog-card">
-                <div class="blog-media">
-                  <a class="blog-img" href="#"
-                    ><img src="~/images/blog/04.jpg" alt="blog"
-                  /></a>
-                </div>
-                <div class="blog-content">
-                  <ul class="blog-meta">
-                    <li><i class="fas fa-user"></i><span>admin</span></li>
-                    <li>
-                      <i class="fas fa-calendar-alt"></i
-                      ><span>february 02, 2021</span>
-                    </li>
-                  </ul>
-                  <h4 class="blog-title">
-                    <a href="blog-details.html"
-                      >Voluptate blanditiis provident Lorem ipsum dolor sit
-                      amet</a
-                    >
-                  </h4>
-                  <p class="blog-desc">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Alias autem recusandae deleniti nam dignissimos sequi ...
-                  </p>
-                  <a class="blog-btn" href="#"
-                    ><span>read more</span><i class="icofont-arrow-right"></i
-                  ></a>
-                </div>
-              </div>
+                        
+                    }
+
             </div>
           </div>
         </div>

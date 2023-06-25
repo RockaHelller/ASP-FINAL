@@ -23,22 +23,15 @@ namespace ASP_FINAL.Data
             public DbSet<Subcategory> SubCategories { get; set; }
             public DbSet<Tag> Tags { get; set; }
             public DbSet<WishList> Wishlists { get; set; }
-
-        /// <summary>
-        /// /////////////////////
-        /// </summary>
-        public DbSet<Slider> Sliders { get; set; }
-        public DbSet<SliderInfo> SliderInfos { get; set; }
-
-
-
-        /// <summary>
-        /// //////////////////
-        /// </summary>
-        
+            public DbSet<Slider> Sliders { get; set; }
+            public DbSet<SliderInfo> SliderInfos { get; set; }
+            public DbSet<Blog> Blogs { get; set; }
+            public DbSet<Branch> Branches { get; set; }
+            public DbSet<Location> Locations { get; set; }
 
 
 
+            
 
 
 

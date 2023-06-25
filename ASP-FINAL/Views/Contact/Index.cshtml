@@ -1,4 +1,4 @@
-﻿
+﻿@model ContactVM
 @{
     ViewData["Title"] = "Index";
 }
@@ -11,27 +11,18 @@
 <section class="inner-section contact-part">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-lg-4">
-                <div class="contact-card">
-                    <i class="icofont-location-pin"></i>
-                    <h4>head office</h4>
-                    <p>1Hd- 50, 010 Avenue, NY 90001 United States</p>
+            @foreach (var item in Model.Location)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="contact-card">
+                        <i class="@item.Icon"></i>
+                        <h4>@item.Title</h4>
+                        @Html.Raw(item.Description)
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="contact-card active">
-                    <i class="icofont-phone"></i>
-                    <h4>phone number</h4>
-                    <p><a href="#">009-215-5596 <span>(toll free)</span></a><a href="#">009-215-5595</a></p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="contact-card">
-                    <i class="icofont-email"></i>
-                    <h4>Support mail</h4>
-                    <p><a href="#">contact@example.com</a><a href="#">info@example.com</a></p>
-                </div>
-            </div>
+            }
+
+
         </div>
         <div class="row">
             <div class="col-lg-6">
@@ -75,42 +66,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-3">
-                <div class="branch-card">
-                    <img src="images/branch/01.jpg" alt="branch">
-                    <div class="branch-overlay">
-                        <h3>dhaka</h3>
-                        <p>kawran bazar, 1100 east tejgaon, dhaka.</p>
+            @foreach (var item in Model.Branch)
+            {
+                <div class="col-sm-6 col-md-6 col-lg-3">
+                    <div class="branch-card">
+                        <img src="~/images/branch/@item.Image" alt="branch">
+                        <div class="branch-overlay">
+                            <h3>@item.Title</h3>
+                            <p>@item.Description</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-3">
-                <div class="branch-card">
-                    <img src="images/branch/02.jpg" alt="branch">
-                    <div class="branch-overlay">
-                        <h3>Narayanganj</h3>
-                        <p>west jalkuri, 1420 shiddirganj, narayanganj.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-3">
-                <div class="branch-card">
-                    <img src="images/branch/03.jpg" alt="branch">
-                    <div class="branch-overlay">
-                        <h3>chandpur</h3>
-                        <p>east lautuli, 2344 faridganj, chandpur.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-3">
-                <div class="branch-card">
-                    <img src="images/branch/04.jpg" alt="branch">
-                    <div class="branch-overlay">
-                        <h3>noakhli</h3>
-                        <p>begumganj, 3737 shonaimuri, noakhli.</p>
-                    </div>
-                </div>
-            </div>
+            }
+
         </div>
     </div>
 </section>
