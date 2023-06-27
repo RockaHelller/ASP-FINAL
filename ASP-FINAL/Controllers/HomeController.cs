@@ -22,7 +22,7 @@ namespace ASP_FINAL.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = await _productService.GetAllWithAsync();
+            var products = await _productService.GetAllWithIncludesAsync();
             var settings = await _context.Settings.ToListAsync();
             var blogs = await _context.Blogs.ToListAsync();
 
@@ -30,7 +30,7 @@ namespace ASP_FINAL.Controllers
             {
                 Products = products.ToList(),
                 SettingDatas = settings.AsEnumerable().ToDictionary(m=>m.Key, m=>m.Value),
-                Blog = new BlogVM { Blogs = blogs },
+                Blog = new BlogVM { Blogs = blogs},
 
             };
 

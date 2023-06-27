@@ -39,6 +39,9 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProductService, ProductService>();

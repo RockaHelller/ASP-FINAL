@@ -7,6 +7,7 @@ namespace ASP_FINAL.Areas.Admin.ViewModels.Category
         [Required]
         public string Name { get; set; }
         [Required]
-        public List<IFormFile> Images { get; set; }
+        public IFormFile Image { get; set; }
+
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace ASP_FINAL.Services
 {
@@ -113,7 +114,7 @@ namespace ASP_FINAL.Services
                     Id = slider.Id,
                     Image = slider.Image,
                     Status = slider.Status,
-                    //CreateDate = slider.CreatedDate.ToString("dd-MM-yyyy")
+                    CreateDate = slider.CreateDate.ToString("dddd, dd MMMM yyyy"),
                 };
 
                 sliderList.Add(model);
@@ -133,6 +134,8 @@ namespace ASP_FINAL.Services
             {
                 Image = slider.Image,
                 Status = slider.Status,
+                CreateDate = slider.CreateDate.ToString("dddd, dd MMMM yyyy"),
+
             };
 
             return model;

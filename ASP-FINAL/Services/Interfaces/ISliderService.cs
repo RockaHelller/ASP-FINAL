@@ -16,8 +16,6 @@ namespace ASP_FINAL.Services.Interfaces
         Task<List<Slider>> GetAllByStatusAsync();
         Task<int> GetCountAsync();
         Task<bool> ChangeStatusAsync(Slider slider);
-
-
         Task<Slider> GetWithIncludesAsync(int id);
 
 

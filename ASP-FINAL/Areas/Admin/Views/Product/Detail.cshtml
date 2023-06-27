@@ -1,0 +1,74 @@
+﻿@model ProductDetailVM
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<style>
+    table, td, td {
+        border: 1px solid;
+    }
+</style>
+
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+        <div class="container">
+            <div class="images">
+                @foreach (var item in Model.Image)
+                {
+                    <img src="~/images/product/@item.Image" style="widtd:200px;height:250px" />
+                }
+            </div>
+            <div @*class="detail"*@>
+                <table>
+                    <tbody style="display: flex;">
+                        <tr style="display: grid;">
+                            <td>Name</td>
+                            <td>Description</td>
+                            <td>Category</td>
+                            <td>Subcategory</td>
+                            <td>Brand</td>
+                            <td>Product Tags</td>
+                            <td>Rating</td>
+                            <td>SKU</td>
+                            <td>StockCount</td>
+                            <td>Discount</td>
+                            <td>Price</td>
+                            <td>Created Date</td>
+                        </tr>
+                        <tr style="display: grid;">
+                            <td>@Model.Name</td>
+                            <td>@Model.Description</td>
+                            <td>@Model.Category</td>
+                            <td>@Model.Subcategory.Name</td>
+                            <td>@Model.Brand</td>
+                            <td>
+                                @foreach (var item in Model.ProductTags)
+                                {
+                                    @item.Tag.Name
+                                    @if (item != Model.ProductTags.Last())
+                                    {
+                                        @Html.Raw(", ")
+                                    }
+                                }
+                            </td>
+                            <td>@Model.Rating</td>
+                            <td>@Model.SalesCount</td>
+                            <td>@Model.StockCount</td>
+                            <td>@Model.Discount.Percent%</td>
+                            <td>@Model.Price</td>
+                            <td>@Model.CreateDate</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a asp-action="Index" class="btn btn-primary btn-rounded btn-fw mt-3">Back</a>
+
+            
+
+
+
+        </div>
+    </div>
+</div>
+

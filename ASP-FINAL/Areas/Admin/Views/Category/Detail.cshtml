@@ -1,0 +1,27 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+                <h1 class="text-center">Slider detail</h1>
+            <div class="container my-3">
+                <h2>Category - @Model.Name</h2>
+                <div class="slider-detail">
+                    <img src="~/images/suggest/@Model.Image" alt="image" style="width:500px;height:300px;" />
+                </div>
+                <h3>Subcategories</h3>
+                @foreach (var item in Model.Subcategories)
+            {
+                <ul>
+                    <li>@item.Name</li>
+                </ul>
+
+            }
+                <h3>Created Date - @Model.CreateDate</h3>
+                <a asp-action="Index" class="btn btn-primary btn-rounded btn-fw">Back</a>
+            </div>
+    </div>
+</div>

@@ -78,7 +78,10 @@
                             <button class="product-wish wish">
                                 <i class="fas fa-heart"></i>
                             </button><a class="product-image" asp-controller="Product" asp-action="Index" asp-route-id="@item.Id">
-                                <img src="~/images/product/@item.Images.FirstOrDefault().Image" alt="product" />
+                                @if (item != null && item.Images != null && item.Images.Any())
+                                {
+                                    <img src="~/images/product/@item.Images.FirstOrDefault().Image" alt="product" />
+                                }
                             </a>
                             <div class="product-widget">
                                 <a title="Product Compare"

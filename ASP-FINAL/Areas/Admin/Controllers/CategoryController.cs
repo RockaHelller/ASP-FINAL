@@ -1,7 +1,10 @@
 ﻿using ASP_FINAL.Areas.Admin.ViewModels.Category;
+using ASP_FINAL.Areas.Admin.ViewModels.Product;
 using ASP_FINAL.Data;
 using ASP_FINAL.Helpers;
 using ASP_FINAL.Models;
+using ASP_FINAL.Services;
+using ASP_FINAL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +16,12 @@ namespace ASP_FINAL.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(AppDbContext context)
+        public CategoryController(AppDbContext context, ICategoryService categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> Index()
@@ -40,6 +45,17 @@ namespace ASP_FINAL.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            Category category = await _categoryService.GetByIdAsync(id);
+
+            if (category is null) return NotFound();
+
+            return View(category);
+        }
+
+
+        [HttpGet]
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult Create()
         {
@@ -52,41 +68,35 @@ namespace ASP_FINAL.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(request);
             }
 
-            foreach (var item in request.Images)
+            if (!request.Image.CheckFileType("image/"))
             {
-                if (!item.CheckFileType("image/"))
-                {
-                    ModelState.AddModelError("Image", "Please select only image file");
-                    return View();
-                }
+                ModelState.AddModelError("Image", "Please select only image file");
+                return View(request);
+            }
 
-                if (item.CheckFileSize(2000))
-                {
-                    ModelState.AddModelError("Image", "Image size must be max 200 KB");
-                    return View();
-                }
+            if (request.Image.CheckFileSize(2000))
+            {
+                ModelState.AddModelError("Image", "Image size must be max 200 KB");
+                return View(request);
             }
 
             string imageName = null;
 
-            if (request.Images != null && request.Images.Count > 0)
+            if (request.Image != null && request.Image.Length > 0)
             {
-                var image = request.Images[0];
+                var image = request.Image;
 
-                if (image != null && image.Length > 0)
+                // Generate a unique image name or use a naming convention that suits your requirements
+                imageName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+
+                // Save the image to a specified location or a database, depending on your implementation
+                var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
                 {
-                    // Generate a unique image name or use a naming convention that suits your requirements
-                    imageName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-
-                    // Save the image to a specified location or a database, depending on your implementation
-                    var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
-                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        await image.CopyToAsync(fileStream);
-                    }
+                    await image.CopyToAsync(fileStream);
                 }
             }
 
@@ -101,6 +111,7 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
         //public async Task<IActionResult> Create(CategoryCreateVM request)
         //{
@@ -125,6 +136,7 @@ namespace ASP_FINAL.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id is null) return BadRequest();
             var existCategory = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
             if (existCategory is null) return NotFound();
@@ -143,34 +155,51 @@ namespace ASP_FINAL.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, CategoryEditVM request)
         {
-            if (id is null) return BadRequest();
+            if (id is null)
+                return BadRequest();
 
-            if (!ModelState.IsValid)
+            var existCategory = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+            if (existCategory is null)
+                return NotFound();
+
+            if (existCategory.Name.Trim() != request.Name.Trim())
             {
-                return View();
+                existCategory.Name = request.Name;
+
+                if (request.NewImage != null)
+                {
+                    if (!request.NewImage.CheckFileType("image/"))
+                    {
+                        ModelState.AddModelError("NewImage", "Please select only image file");
+                        return View();
+                    }
+
+                    if (request.NewImage.CheckFileSize(2000))
+                    {
+                        ModelState.AddModelError("NewImage", "Image size must be max 200 KB");
+                        return View();
+                    }
+
+                    // Generate a unique image name or use a naming convention that suits your requirements
+                    var imageName = Guid.NewGuid().ToString() + Path.GetExtension(request.NewImage.FileName);
+
+                    // Save the new image to a specified location or a database, depending on your implementation
+                    var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        await request.NewImage.CopyToAsync(fileStream);
+                    }
+
+                    existCategory.Image = imageName;
+                }
             }
 
-            var existCategory = await _context.Categories.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
-            if (existCategory is null) return NotFound();
-
-            if (existCategory.Name.Trim() == request.Name.Trim())
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            Category category = new()
-            {
-                Id = request.Id,
-                Name = request.Name,
-                Image = request.Image,
-            };
-
-            _context.Update(category);
-
+            _context.Update(existCategory);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
+
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]

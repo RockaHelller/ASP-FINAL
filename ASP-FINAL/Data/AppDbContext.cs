@@ -28,6 +28,8 @@ namespace ASP_FINAL.Data
             public DbSet<Blog> Blogs { get; set; }
             public DbSet<Branch> Branches { get; set; }
             public DbSet<Location> Locations { get; set; }
+            public DbSet<Member> Members { get; set; }
+            public DbSet<Reason> Reasons { get; set; }
 
 
 

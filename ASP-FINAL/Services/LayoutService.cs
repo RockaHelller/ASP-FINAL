@@ -3,6 +3,7 @@ using ASP_FINAL.Models;
 using ASP_FINAL.Services.Interfaces;
 using ASP_FINAL.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace ASP_FINAL.Services
@@ -26,9 +27,20 @@ namespace ASP_FINAL.Services
         {
             var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
-            var datas =  _context.Settings.AsEnumerable().ToDictionary(m => m.Key, m => m.Value);
-            return new LayoutVM { SettingDatas = datas, UserFullName = user?.FullName, UserEmail = user?.Email };
+            var datas = _context.Settings.AsEnumerable().ToDictionary(m => m.Key, m => m.Value);
 
+            var categories = _context.Categories.Include(c => c.Subcategories).ToList();
+
+            var layoutVM = new LayoutVM
+            {
+                SettingDatas = datas,
+                UserFullName = user?.FullName,
+                UserEmail = user?.Email,
+                Categories = categories,
+            };
+
+            return layoutVM;
         }
+
     }
 }
