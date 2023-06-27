@@ -13,7 +13,7 @@ namespace ASP_FINAL.Areas.Admin.ViewModels.Product
         public string Price { get; set; }
         public string CreateDate { get; set; }
         public string Brand { get; set; }
-        public Subcategory Subcategory { get; set; }
+        public ASP_FINAL.Models.Subcategory Subcategory { get; set; }
         public Discount Discount { get; set; }
         public int Rating { get; set; }
         public ICollection<Review> Reviews { get; set; }

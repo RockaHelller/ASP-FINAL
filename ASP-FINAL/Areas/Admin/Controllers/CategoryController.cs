@@ -162,36 +162,37 @@ namespace ASP_FINAL.Areas.Admin.Controllers
             if (existCategory is null)
                 return NotFound();
 
+            // Update the category name if it has changed
             if (existCategory.Name.Trim() != request.Name.Trim())
             {
                 existCategory.Name = request.Name;
+            }
 
-                if (request.NewImage != null)
+            if (request.NewImage != null)
+            {
+                if (!request.NewImage.CheckFileType("image/"))
                 {
-                    if (!request.NewImage.CheckFileType("image/"))
-                    {
-                        ModelState.AddModelError("NewImage", "Please select only image file");
-                        return View();
-                    }
-
-                    if (request.NewImage.CheckFileSize(2000))
-                    {
-                        ModelState.AddModelError("NewImage", "Image size must be max 200 KB");
-                        return View();
-                    }
-
-                    // Generate a unique image name or use a naming convention that suits your requirements
-                    var imageName = Guid.NewGuid().ToString() + Path.GetExtension(request.NewImage.FileName);
-
-                    // Save the new image to a specified location or a database, depending on your implementation
-                    var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
-                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        await request.NewImage.CopyToAsync(fileStream);
-                    }
-
-                    existCategory.Image = imageName;
+                    ModelState.AddModelError("NewImage", "Please select only an image file");
+                    return View();
                 }
+
+                if (request.NewImage.CheckFileSize(2000))
+                {
+                    ModelState.AddModelError("NewImage", "Image size must be a maximum of 200 KB");
+                    return View();
+                }
+
+                // Generate a unique image name or use a naming convention that suits your requirements
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(request.NewImage.FileName);
+
+                // Save the new image to a specified location or a database, depending on your implementation
+                var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await request.NewImage.CopyToAsync(fileStream);
+                }
+
+                existCategory.Image = imageName;
             }
 
             _context.Update(existCategory);
@@ -199,6 +200,7 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
 
         //[HttpPost]

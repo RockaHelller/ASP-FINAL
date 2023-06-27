@@ -7,7 +7,7 @@ namespace ASP_FINAL.Areas.Admin.ViewModels.Category
         public string Name { get; set; }
         public string Image { get; set; }
         public string CreateDate { get; set; }
-        public Subcategory Subcategory { get; set; }
+        public ASP_FINAL.Models.Subcategory Subcategory { get; set; }
 
     }
 }

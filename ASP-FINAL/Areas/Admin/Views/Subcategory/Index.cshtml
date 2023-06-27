@@ -1,0 +1,85 @@
+﻿@model List<ASP_FINAL.Areas.Admin.ViewModels.Subcategory.SubcategoryVM>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    tr {
+    }
+
+    th {
+        color: antiquewhite;
+        /*text-align: center;*/
+    }
+
+    td {
+        border-top: 0px !important;
+        color: white;
+        justify-content: center;
+        /*text-align: center;*/
+    }
+
+    .vertical-center {
+        vertical-align: middle !important;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+        <div class="container my-3">
+            <h2 class="text-center">Categories</h2>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("SuperAdmin"))
+                {
+                    <div class="create-btn ">
+                        <a asp-controller="Subcategory" asp-action="Create" class="btn btn-success btn-rounded btn-fw">Create</a>
+                    </div>
+                }
+            }
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th style="text-align: center;">
+                                Options
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="py-1 vertical-center">
+                                    <!-- Added 'vertical-center' class here -->
+                                @Html.Raw(item.Name)
+                                </td>
+                                <td class="vertical-center">
+                                   @item.Category.Name
+                                </td>
+                                <td style="display:grid;" class="vertical-center">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-rounded btn-fw">Edit</a>
+                                    <form style="display: inline-block;" method="post" asp-action="Delete" asp-route-id="@item.Id">
+                                        <button type="submit" class="btn btn-danger btn-rounded btn-fw">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
