@@ -4,9 +4,12 @@ namespace ASP_FINAL.Areas.Admin.ViewModels.Subcategory
 {
     public class SubcategoryCreateVM
     {
-        [Required]
+        [Required(ErrorMessage = "Please enter the subcategory name.")]
         public string Name { get; set; }
-        [Required]
-        public ASP_FINAL.Models.Category Category { get; set; }
+
+        [Required(ErrorMessage = "Please select a category.")]
+        public int CategoryId { get; set; }
+
+        public List<Models.Category> Categories { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ASP_FINAL.Models;
+﻿using ASP_FINAL.Areas.Admin.ViewModels.Subcategory;
+using ASP_FINAL.Models;
 
 namespace ASP_FINAL.Services.Interfaces
 {
@@ -6,5 +7,7 @@ namespace ASP_FINAL.Services.Interfaces
     {
         Task<List<Subcategory>> GetAll();
         Task<Subcategory> GetByIdAsync(int id);
+        Task AddAsync(SubcategoryCreateVM model);
+
     }
 }

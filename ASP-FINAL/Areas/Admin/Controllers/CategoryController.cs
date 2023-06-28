@@ -229,7 +229,5 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

@@ -24,7 +24,7 @@ namespace ASP_FINAL.Controllers
         {
             var products = await _productService.GetAllWithIncludesAsync();
             var settings = await _context.Settings.ToListAsync();
-            var blogs = await _context.Blogs.ToListAsync();
+            var blogs = await _context.Blogs.OrderByDescending(m=>m.Id).ToListAsync();
 
             HomeVM model = new()
             {

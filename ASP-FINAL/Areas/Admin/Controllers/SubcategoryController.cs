@@ -7,6 +7,7 @@ using ASP_FINAL.Services;
 using ASP_FINAL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +19,24 @@ namespace ASP_FINAL.Areas.Admin.Controllers
     {
         private readonly AppDbContext _context;
         private readonly ISubcategoryService _subcategoryService;
+        private readonly ICategoryService _categoryService;
 
-        public SubcategoryController(AppDbContext context, ISubcategoryService subcategoryService)
+
+        public SubcategoryController(AppDbContext context, ISubcategoryService subcategoryService, ICategoryService categoryService)
         {
             _subcategoryService = subcategoryService;
             _context = context;
+            _categoryService = categoryService;
+        }
+
+        private async Task GetAllSelectOptions()
+        {
+            ViewBag.categories = await GetCategories();
+        }
+        private async Task<SelectList> GetCategories()
+        {
+            IEnumerable<Category> categories = await _categoryService.GetAll();
+            return new SelectList(categories, "Id", "Name");
         }
 
 
@@ -48,27 +62,39 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
         [HttpGet]
         [Authorize(Roles = "SuperAdmin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new SubcategoryCreateVM();
+            model.Categories = await _categoryService.GetAll();
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SubcategoryCreateVM request)
         {
-            if (!ModelState.IsValid)
+            await GetAllSelectOptions();
+
+            await _subcategoryService.AddAsync(request);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Subcategory subcategory = await _context.SubCategories.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (subcategory == null)
             {
-                return View(request);
+                // Handle the case when the subcategory does not exist
+                return NotFound();
             }
 
-            Subcategory newSubcategory = new()
-            {
-                Name = request.Name,
-                Category = request.Category
-            };
-
-            await _context.SubCategories.AddAsync(newSubcategory);
+            _context.SubCategories.Remove(subcategory);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -76,5 +102,14 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
 
 
+
+
+
+
+
     }
+
+
+
+
 }

@@ -68,7 +68,8 @@
                                 </td>
                                 <td style="display:grid;" class="vertical-center">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-rounded btn-fw">Edit</a>
-                                    <form style="display: inline-block;" method="post" asp-action="Delete" asp-route-id="@item.Id">
+                                    <form asp-controller="Subcategory" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this subcategory?');">
+                                        <input type="hidden" name="id" value="@item.Id" />
                                         <button type="submit" class="btn btn-danger btn-rounded btn-fw">Delete</button>
                                     </form>
                                 </td>
