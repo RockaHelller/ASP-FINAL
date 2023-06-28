@@ -7,6 +7,8 @@ namespace ASP_FINAL.Services.Interfaces
     {
         Task<List<Subcategory>> GetAll();
         Task<Subcategory> GetByIdAsync(int id);
+        //IEnumerable<Subcategory> GetByCategoryId(int categoryId);
+
         Task AddAsync(SubcategoryCreateVM model);
 
     }

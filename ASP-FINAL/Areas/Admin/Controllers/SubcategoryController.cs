@@ -82,6 +82,64 @@ namespace ASP_FINAL.Areas.Admin.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var existSubcategory = await _context.SubCategories.FirstOrDefaultAsync(m => m.Id == id);
+            if (existSubcategory is null)
+                return NotFound();
+
+            SubcategoryEditVM model = new SubcategoryEditVM
+            {
+                Id = existSubcategory.Id,
+                Name = existSubcategory.Name,
+                CategoryId = existSubcategory.CategoryId
+            };
+
+            // Retrieve the list of categories and assign it to the model
+            model.Category = await _context.Categories.ToListAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, SubcategoryEditVM request)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var existSubcategory = await _context.SubCategories.FirstOrDefaultAsync(m => m.Id == id);
+            if (existSubcategory is null)
+                return NotFound();
+
+            if (existSubcategory.Name.Trim() != request.Name.Trim())
+            {
+                existSubcategory.Name = request.Name;
+            }
+
+            if (existSubcategory.CategoryId != request.CategoryId)
+            {
+                // Retrieve the new category from the database
+                var newCategory = await _context.Categories.FindAsync(request.CategoryId);
+                if (newCategory != null)
+                {
+                    existSubcategory.Category = newCategory;
+                    existSubcategory.CategoryId = newCategory.Id;
+                }
+            }
+
+            _context.Update(existSubcategory);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

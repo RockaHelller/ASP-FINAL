@@ -38,7 +38,10 @@ namespace ASP_FINAL.Services
             _context.SubCategories.Add(subCategory);
             await _context.SaveChangesAsync();
         }
-
+        //public IEnumerable<Subcategory> GetByCategoryId(int categoryId)
+        //{
+        //    return _context.SubCategories.Where(s => s.CategoryId == categoryId).ToList();
+        //}
 
 
 

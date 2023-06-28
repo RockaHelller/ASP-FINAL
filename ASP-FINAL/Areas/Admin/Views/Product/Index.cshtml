@@ -83,7 +83,7 @@
                                 <td class="py-1">
                                     @item.StockCount
                                 </td>
-                                <td style="display: flex; flex-direction: column;">
+                                <td style="display: flex; flex-direction: column; align-items: center">
                                     <a style="width: 70px;" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary btn-rounded btn-fw">Detail</a>
                                     <a style="width: 70px;" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-rounded btn-fw">Edit</a>
                                     <form style="display: inline-block; text-align: initial !important;" method="post" asp-action="Delete" asp-route-id="@item.Id">

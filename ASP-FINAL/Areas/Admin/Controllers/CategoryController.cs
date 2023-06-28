@@ -93,7 +93,7 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 imageName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
 
                 // Save the image to a specified location or a database, depending on your implementation
-                var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
+                var imagePath = Path.Combine("wwwroot/images/product", imageName);
                 using (var fileStream = new FileStream(imagePath, FileMode.Create))
                 {
                     await image.CopyToAsync(fileStream);
@@ -111,27 +111,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-
-        //public async Task<IActionResult> Create(CategoryCreateVM request)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View();
-        //    }
-
-        //    Category newCategory = new()
-        //    {
-        //        Name = request.Name,
-        //        Image = request.Images
-        //    };
-
-        //    await _context.Categories.AddAsync(newCategory);
-
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
@@ -162,7 +141,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
             if (existCategory is null)
                 return NotFound();
 
-            // Update the category name if it has changed
             if (existCategory.Name.Trim() != request.Name.Trim())
             {
                 existCategory.Name = request.Name;
@@ -182,10 +160,8 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                     return View();
                 }
 
-                // Generate a unique image name or use a naming convention that suits your requirements
                 var imageName = Guid.NewGuid().ToString() + Path.GetExtension(request.NewImage.FileName);
 
-                // Save the new image to a specified location or a database, depending on your implementation
                 var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
                 using (var fileStream = new FileStream(imagePath, FileMode.Create))
                 {
@@ -203,31 +179,31 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    var existCategory = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
-
-        //    _context.Remove(existCategory);
-
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ActionName("Delete")]
-        public async Task<IActionResult> SoftDelete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var existCategory = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
-            existCategory.SoftDelete = true;
+            _context.Remove(existCategory);
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[ActionName("Delete")]
+        //public async Task<IActionResult> SoftDelete(int id)
+        //{
+        //    var existCategory = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+
+        //    existCategory.SoftDelete = true;
+
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
 }

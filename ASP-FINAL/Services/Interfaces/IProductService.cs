@@ -11,6 +11,9 @@ namespace ASP_FINAL.Services.Interfaces
         ProductDetailVM GetMappedData(Product product);
         Task EditAsync(int productId, ProductEditVM model);
         Task AddAsync(ProductCreateVM model);
+        Task CreateAsync(ProductCreateVM model);
+
+
         //Task DeleteAsync(int id);
 
 

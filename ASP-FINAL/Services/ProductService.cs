@@ -1,5 +1,6 @@
 ﻿using ASP_FINAL.Areas.Admin.ViewModels.Product;
 using ASP_FINAL.Data;
+using ASP_FINAL.Helpers;
 using ASP_FINAL.Models;
 using ASP_FINAL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -103,5 +104,66 @@ namespace ASP_FINAL.Services
             };
             return productDetail;
         }
+
+        public int Generate5DigitNumber()
+        {
+            Random random = new Random();
+            int min = 10000;
+            int max = 99999;
+            return random.Next(min, max);
+        }
+
+        public async Task CreateAsync(ProductCreateVM model)
+        {
+            List<ProductImage> images = new List<ProductImage>();
+
+            foreach (var file in model.Image)
+            {
+                string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                await file.SaveFileAsync(fileName, _env.WebRootPath, "images/product");
+                images.Add(new ProductImage { Image = fileName, IsMain = false });
+            }
+
+            if (images.Count > 0)
+            {
+                images[0].IsMain = true; // Set the first image as the main image
+            }
+
+            Product product = new Product
+            {
+                BrandId = model.BrandId,
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                DiscountId = model.DiscountId,
+                StockCount = model.StockCount,
+                SubcategoryId = model.SubcategoryId,
+                Images = images,
+                Price = model.Price,
+                Name = model.Name,
+                SKUCode = Generate5DigitNumber(),
+                RatingId = 8
+            };
+
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+
+            foreach (var item in model.Tags)
+            {
+                if (item.IsChecked)
+                {
+                    ProductTag productTag = new ProductTag
+                    {
+                        ProductId = product.Id,
+                        TagId = item.Id
+                    };
+
+                    await _context.ProductTags.AddAsync(productTag);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }

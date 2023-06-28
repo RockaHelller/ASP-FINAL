@@ -1,7 +1,107 @@
-﻿
+﻿@model ProductCreateVM
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Collections.Generic
 @{
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<style>
+    input {
+        background: #e5eff7 !important;
+    }
 
+    select {
+        background: #e5eff7 !important;
+    }
+
+    textarea {
+        background: #e5eff7 !important;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+        <div class="container my-5">
+            <form method="post" asp-controller="Product" asp-action="Create" enctype="multipart/form-data">
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger d-block"></span>
+
+                <select class="form-control" asp-for="CategoryId" id="category-select" required>
+                    <option value="">Select Category</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Value">@category.Text</option>
+                    }
+                </select>
+                <span class="text-danger d-block" asp-validation-for="CategoryId"></span>
+
+                <select class="form-control" asp-for="SubcategoryId" id="subcategory-select" required>
+                    <option value="">Select Subcategory</option>
+                    @foreach (var subcategory in Model.Subcategories)
+                    {
+                        <option value="@subcategory.Value">@subcategory.Text</option>
+                    }
+                </select>
+                <span class="text-danger d-block" asp-validation-for="SubcategoryId"></span>
+
+                <select class="form-control" asp-for="BrandId" id="brand-select" required>
+                    <option value="">Select Brand</option>
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <option value="@brand.Value">@brand.Text</option>
+                    }
+                </select>
+                <span class="text-danger d-block" asp-validation-for="BrandId"></span>
+
+                <input class="form-control" placeholder="Product Name" name="Name" asp-for="Name" required />
+                <span class="text-danger d-block" asp-validation-for="Name"></span>
+
+                <input class="form-control" placeholder="Price" value="" name="Price" asp-for="Price" type="number" min="0" step="0.01" required />
+                <span class="text-danger d-block" asp-validation-for="Price"></span>
+
+                <input class="form-control" placeholder="Sales Count" name="SalesCount" value="" asp-for="SalesCount" required />
+                <span class="text-danger d-block" asp-validation-for="SalesCount"></span>
+
+                <input class="form-control" placeholder="Stock Count" name="StockCount" value="" asp-for="StockCount" required />
+                <span class="text-danger d-block" asp-validation-for="StockCount"></span>
+
+                <input class="form-control" placeholder="SKU Code" name="SKUCode" value="" asp-for="SKUCode" required />
+                <span class="text-danger d-block" asp-validation-for="SKUCode"></span>
+
+                <select class="form-control" asp-for="DiscountId" id="discount-select" required>
+                    <option value="">Select Discount</option>
+                    @foreach (var discount in Model.Discounts)
+                    {
+                        <option value="@discount.Value">@discount.Text</option>
+                    }
+                </select>
+                <span class="text-danger d-block" asp-validation-for="DiscountId"></span>
+
+                <textarea class="form-control" placeholder="Description" name="Description" asp-for="Description" rows="3" required></textarea>
+                <span class="text-danger d-block" asp-validation-for="Description"></span>
+
+
+                <div class="form-group mt-3">
+                    <label>Tags</label>
+                    @for (var i = 0; i < Model.Tags.Count; i++)
+                    {
+                        <div class="form-check">
+                            <input type="checkbox" asp-for="@Model.Tags[i].IsChecked" class="form-check-input">
+                            <label class="form-check-label" asp-for="@Model.Tags[i].IsChecked">
+                                @Model.Tags[i].Value
+                            </label>
+
+                            <input type="hidden" asp-for="@Model.Tags[i].Id">
+                            <input type="hidden" asp-for="@Model.Tags[i].Value">
+                        </div>
+                    }
+                </div>
+
+                <button type="submit" class="btn btn-success btn-rounded btn-fw mt-3">Submit</button>
+                <a asp-action="Index" class="btn btn-primary btn-rounded btn-fw mt-3">Back</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,25 +1,26 @@
-﻿@model SubcategoryCreateVM
+﻿@using ASP_FINAL.Areas.Admin.ViewModels.Subcategory;
+@model SubcategoryEditVM
+
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
+
 
 <div class="row">
     <div class="col-2"></div>
     <div class="col-10">
         <div class="container my-5">
-            <form method="post" asp-controller="Subcategory" asp-action="Create">
-                <input class="form-control" placeholder="Subcategory Name" name="Name" asp-for="Name" id="subcategory-name" required></input>
-                <span class="text-danger d-block" asp-validation-for="Name"></span>
-
+            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                <input asp-for="Name" class="form-control" maxlength="" />
                 <select class="form-control" asp-for="CategoryId" id="category-select" required>
                     <option value="">Select Category</option>
-                    @foreach (var category in Model.Categories)
+                    @foreach (var category in Model.Category)
                     {
                         <option value="@category.Id">@category.Name</option>
                     }
                 </select>
                 <span class="text-danger d-block" asp-validation-for="CategoryId"></span>
-
+                <span class="text-danger d-block" asp-validation-for="Name"></span>
                 <button type="submit" class="btn btn-success btn-rounded btn-fw mt-3">Submit</button>
                 <a asp-action="Index" class="btn btn-primary btn-rounded btn-fw mt-3">Back</a>
             </form>
