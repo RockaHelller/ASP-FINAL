@@ -8,6 +8,7 @@ namespace ASP_FINAL.ViewModels
         public IEnumerable<Product> Products { get; set; }
         public Dictionary<string, string> SettingDatas { get; set; }
         public BlogVM Blog { get; set; }
+        public List<Category> Categories { get; set; }
 
 
     }

@@ -27,6 +27,7 @@ namespace ASP_FINAL.Services
         {
             return await _context.Categories
                 .Include(c => c.Subcategories)
+                .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 

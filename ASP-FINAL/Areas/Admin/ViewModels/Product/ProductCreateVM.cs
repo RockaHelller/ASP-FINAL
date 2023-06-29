@@ -18,10 +18,11 @@ namespace ASP_FINAL.Areas.Admin.ViewModels.Product
         public int BrandId { get; set; }
         [Required(ErrorMessage = "Please Add Image")]
         public List<IFormFile> Image { get; set; }
-        public List<SelectListItem> Categories { get; set; }
-        public List<SelectListItem> Brands { get; set; }
-        public List<SelectListItem> Discounts { get; set; }
-        public List<SelectListItem> Subcategories { get; set; }
+        
+        //public List<SelectListItem> Categories { get; set; }
+        //public List<SelectListItem> Brands { get; set; }
+        //public List<SelectListItem> Discounts { get; set; }
+        //public List<SelectListItem> Subcategories { get; set; }
         public List<TagCheckBox> Tags { get; set; }
 
     }

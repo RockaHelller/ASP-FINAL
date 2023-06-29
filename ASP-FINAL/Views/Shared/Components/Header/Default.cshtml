@@ -518,7 +518,7 @@
                 <li><a href="blog-grid.html">blog grid</a></li>
                 <li><a href="blog-standard.html">blog standard</a></li>
                 <li><a href="blog-details.html">blog details</a></li>
-                <li><a href="blog-author.html">blog author</a></li>
+                <li><a href="blog-author.htmlz">blog author</a></li>
                 </ul>*@
             </li>
             <li><a class="nav-link" href="offer.html"><i class="icofont-sale-discount"></i>offers</a></li>
@@ -563,29 +563,29 @@
             <div class="product-view">
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
-                        <div class="view-gallery">
-                            <div class="view-label-group">
-                                <label class="view-label new">new</label><label class="view-label off">-10%</label>
+                        @foreach (var product in Model.Products)
+                        {
+                            <div class="view-gallery">
+                                <div class="view-label-group">
+                                    <label class="view-label new">new</label><label class="view-label off">-10%</label>
+                                </div>
+                                <ul class="preview-slider slider-arrow">
+                                    @foreach (var image in product.Images)
+                                    {
+                                        <li><img src="~/images/product/@image.Image" alt="product"></li>
+                                    }
+                                </ul>
+                                <ul class="thumb-slider">
+                                    @foreach (var image in product.Images)
+                                    {
+                                        <li><img src="~/images/product/@image.Image" alt="product"></li>
+                                    }
+                                </ul>
                             </div>
-                            <ul class="preview-slider slider-arrow">
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                            </ul>
-                            <ul class="thumb-slider">
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                                <li><img src="~/images/product/01.jpg" alt="product"></li>
-                            </ul>
-                        </div>
+                        }
+
+
+
                     </div>
                     <div class="col-md-6 col-lg-6">
                         <div class="view-details">

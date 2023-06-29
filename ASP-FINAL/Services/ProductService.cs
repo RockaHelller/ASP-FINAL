@@ -105,13 +105,13 @@ namespace ASP_FINAL.Services
             return productDetail;
         }
 
-        public int Generate5DigitNumber()
-        {
-            Random random = new Random();
-            int min = 10000;
-            int max = 99999;
-            return random.Next(min, max);
-        }
+        //public int Generate5DigitNumber()
+        //{
+        //    Random random = new Random();
+        //    int min = 10000;
+        //    int max = 99999;
+        //    return random.Next(min, max);
+        //}
 
         public async Task CreateAsync(ProductCreateVM model)
         {
@@ -140,7 +140,7 @@ namespace ASP_FINAL.Services
                 Images = images,
                 Price = model.Price,
                 Name = model.Name,
-                SKUCode = Generate5DigitNumber(),
+                SKUCode = model.SKUCode,
                 RatingId = 8
             };
 
