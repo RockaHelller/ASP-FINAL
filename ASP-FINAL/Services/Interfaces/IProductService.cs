@@ -12,7 +12,7 @@ namespace ASP_FINAL.Services.Interfaces
         Task EditAsync(int productId, ProductEditVM model);
         Task AddAsync(ProductCreateVM model);
         Task CreateAsync(ProductCreateVM model);
-
+        Task EditAsync(ProductEditVM model);
 
         //Task DeleteAsync(int id);
 

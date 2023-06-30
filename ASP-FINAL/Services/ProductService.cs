@@ -80,6 +80,9 @@ namespace ASP_FINAL.Services
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+
+
+
         public ProductDetailVM GetMappedData(Product product)
         {
             ProductDetailVM productDetail = new ProductDetailVM
@@ -161,6 +164,80 @@ namespace ASP_FINAL.Services
                 }
             }
 
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task EditAsync(ProductEditVM model)
+        {
+            List<ProductImage> images = new List<ProductImage>();
+
+            foreach (var file in model.Image)
+            {
+                string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                await file.SaveFileAsync(fileName, _env.WebRootPath, "images/product");
+                images.Add(new ProductImage { Image = fileName, IsMain = false });
+            }
+
+            if (images.Count > 0)
+            {
+                images[0].IsMain = true; // Set the first image as the main image
+            }
+
+            Product product = new Product
+            {
+                Id = model.Id,
+                BrandId = model.BrandId,
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                DiscountId = model.DiscountId,
+                StockCount = model.StockCount,
+                SubcategoryId = model.SubcategoryId,
+                Images = images,
+                Price = model.Price,
+                Name = model.Name,
+                SKUCode = model.SKUCode,
+                RatingId = 8
+            };
+
+            foreach (var item in model.Tags)
+            {
+
+                var existTag = await _context.ProductTags.ToListAsync();
+
+                foreach (var tags in existTag)
+                {
+                    if (tags.ProductId == product.Id)
+                    {
+                        _context.Remove(tags);
+                    }
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            foreach (var item in model.Tags)
+            {
+
+
+
+
+
+                if (item.IsChecked)
+                {
+                    ProductTag productTag = new ProductTag
+                    {
+                        ProductId = product.Id,
+                        TagId = item.Id
+                    };
+                    //product.ProductTags.Add(productTag);
+                    await _context.ProductTags.AddAsync(productTag);
+                }
+            }
+
+
+
+
+            _context.Update(product);
             await _context.SaveChangesAsync();
         }
 
