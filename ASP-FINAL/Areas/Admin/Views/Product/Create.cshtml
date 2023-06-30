@@ -38,13 +38,18 @@
                 <span class="text-danger d-block" asp-validation-for="CategoryId"></span>
 
                 <select class="form-control" asp-for="SubcategoryId" id="subcategory-select" required>
-                    <option value="">Select Subcategory</option>
+                    <option value="" disabled selected>Subcategory (Select Only Corresponding Ones!)</option>
                     @foreach (var subcategory in ViewBag.subcategories)
                     {
                         <option value="@subcategory.Value">@subcategory.Text</option>
                     }
                 </select>
                 <span class="text-danger d-block" asp-validation-for="SubcategoryId"></span>
+
+
+
+
+                @*Select Only Corresponding Subcategory!*@
 
                 <select class="form-control" asp-for="BrandId" id="brand-select" required>
                     <option value="">Select Brand</option>

@@ -1,4 +1,7 @@
 ﻿using ASP_FINAL.Models;
+using Microsoft.Build.Framework;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASP_FINAL.Areas.Admin.ViewModels.Product
 {
@@ -15,7 +18,7 @@ namespace ASP_FINAL.Areas.Admin.ViewModels.Product
         public int CategoryId { get; set; }
         public int DiscountId { get; set; }
         public int BrandId { get; set; }
-        public List<IFormFile> Image { get; set; }
+        public List<IFormFile> ?Image { get; set; }
         //public List<ProductImage> Images { get; set; }
         //public string ImageName { get; set; } // Add this property to store the image name
         public List<TagCheckBox> Tags { get; set; }

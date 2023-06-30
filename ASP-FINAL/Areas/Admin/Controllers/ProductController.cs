@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Security.Cryptography.X509Certificates;
+using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 
 namespace ASP_FINAL.Areas.Admin.Controllers
 {
@@ -53,15 +54,13 @@ namespace ASP_FINAL.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 10; // Number of products to display per page
+            int pageSize = 5; // Number of products to display per page
 
             var products = await _productService.GetAllWithIncludesAsync();
 
-            // Calculate total number of pages
             int totalItems = products.Count();
             int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-            // Retrieve the products for the current page
             var pagedProducts = products
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -85,7 +84,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 });
             }
 
-            // Create the Paginate object
             var paginatedModel = new Paginate<ProductVM>(model, page, totalPages);
 
             return View(paginatedModel);
@@ -125,8 +123,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 tagCheckBoxes.Add(new TagCheckBox { Id = item.Id, Value = item.Name, IsChecked = false });
             }
 
-            //var CategoriesList = new SelectList(categories, "Id", "Name");
-
             ViewBag.categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
             ViewBag.subcategories = subcategories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
             ViewBag.brands = brands.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
@@ -135,10 +131,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
             var model = new ProductCreateVM
             {
-                //Categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList(),
-                //Subcategories = subcategories.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name }).ToList(),
-                //Brands = brands.Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList(),
-                //Discounts = discounts.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name }).ToList(),
                 Tags = tagCheckBoxes
             };
 
@@ -153,7 +145,16 @@ namespace ASP_FINAL.Areas.Admin.Controllers
             await GetAllSelectOptions();
             if (!ModelState.IsValid)
             {
-                return View();
+                var categories = await _categoryService.GetAll();
+                var subcategories = await _subcategoryService.GetAll();
+                var brands = await _context.Brands.ToListAsync();
+                var discounts = await _context.Discounts.ToListAsync();
+
+                ViewBag.categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
+                ViewBag.subcategories = subcategories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
+                ViewBag.brands = brands.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
+                ViewBag.discounts = discounts.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
+                return View(model);
             }
 
             foreach (var item in model.Image)
@@ -174,102 +175,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
             await _productService.CreateAsync(model);
             return RedirectToAction("Index");
 
-
-
-
-
-
-
-            //if (model.Image == null || model.Image.Count == 0)
-            //{
-            //    ModelState.AddModelError("Image", "Please select an image file");
-            //}
-            //else
-            //{
-            //    foreach (var image in model.Image)
-            //    {
-            //        if (!IsImageFile(image))
-            //        {
-            //            ModelState.AddModelError("Image", "Please select only image files");
-            //            break;
-            //        }
-            //        else if (image.Length > 200000) // Adjust the size limit according to your requirements (200 KB = 200,000 bytes)
-            //        {
-            //            ModelState.AddModelError("Image", "Image size must be max 200 KB");
-            //            break;
-            //        }
-            //    }
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    // Process the image upload
-            //    var imageNames = new List<string>();
-            //    foreach (var image in model.Image)
-            //    {
-            //        var imageName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-            //        var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
-            //        using (var fileStream = new FileStream(imagePath, FileMode.Create))
-            //        {
-            //            await image.CopyToAsync(fileStream);
-            //        }
-            //        imageNames.Add(imageName);
-            //    }
-
-            //    // Map the view model to the entity
-            //    var productImages = imageNames.Select(imageName => new ProductImage { Image = imageName }).ToList();
-
-            //    var product = new Product
-            //    {
-            //        Name = model.Name,
-            //        SKUCode = model.SKUCode,
-            //        SalesCount = model.SalesCount,
-            //        StockCount = model.StockCount,
-            //        Price = model.Price,
-            //        Description = model.Description,
-            //        SubcategoryId = model.SubcategoryId,
-            //        CategoryId = model.CategoryId,
-            //        DiscountId = model.DiscountId,
-            //        BrandId = model.BrandId,
-            //        Images = productImages // Set the collection of product images
-            //    };
-
-            //    // Add the product to the database
-            //    await _context.Products.AddAsync(product);
-            //    await _context.SaveChangesAsync();
-
-            //    // Process the selected tags
-            //    if (model.Tags != null && model.Tags.Any())
-            //    {
-            //        foreach (var tag in model.Tags)
-            //        {
-            //            if (tag.IsChecked)
-            //            {
-            //                var productTag = new ProductTag
-            //                {
-            //                    ProductId = product.Id,
-            //                    TagId = tag.Id
-            //                };
-
-            //                await _context.ProductTags.AddAsync(productTag);
-            //            }
-            //        }
-            //        await _context.SaveChangesAsync();
-            //    }
-
-            //    return RedirectToAction(nameof(Index));
-            //}
-
-            //// If the model is not valid, re-populate the dropdown lists and return to the create view with the model
-            //var categories = await _categoryService.GetAll();
-            //var brands = await _context.Brands.ToListAsync();
-            //var discounts = await _context.Discounts.ToListAsync();
-
-            //model.Categories = categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name }).ToList();
-            //model.Brands = brands.Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name }).ToList();
-            //model.Discounts = discounts.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = d.Name }).ToList();
-
-            //return View(model);
         }
 
         [HttpGet]
@@ -279,7 +184,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 return BadRequest();
 
             var existProduct = await _productService.GetByIdAsync(id);
-            //var existProduct = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
             if (existProduct is null)
                 return NotFound();
 
@@ -293,7 +197,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
             var model = new ProductEditVM
             {
-                // Assign values to the properties of the model
                 Id = existProduct.Id,
                 Name = existProduct.Name,
                 SKUCode = existProduct.SKUCode,
@@ -305,11 +208,9 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 CategoryId = existProduct.CategoryId,
                 DiscountId = existProduct.DiscountId,
                 BrandId = existProduct.BrandId,
-                //Image = existProduct.Images?.ToList(), // Check if Images property is null before calling ToList(),
-                Tags = tagCheckBoxes
+                Tags = tagCheckBoxes,
             };
 
-            // Retrieve the list of categories from the database and assign it to ViewBag.categories
             var categories = await _context.Categories.ToListAsync();
             ViewBag.categories = categories.Select(c => new SelectListItem
             {
@@ -317,7 +218,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 Text = c.Name
             }).ToList();
 
-            // Retrieve the list of subcategories from the database and assign it to ViewBag.subcategories
             var subcategories = await _context.SubCategories.ToListAsync();
             ViewBag.subcategories = subcategories.Select(s => new SelectListItem
             {
@@ -332,7 +232,6 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 Text = b.Name
             }).ToList();
 
-            // Retrieve the list of discounts from the database and assign it to ViewBag.discounts
             var discounts = await _context.Discounts.ToListAsync();
             ViewBag.discounts = discounts.Select(d => new SelectListItem
             {
@@ -351,17 +250,8 @@ namespace ASP_FINAL.Areas.Admin.Controllers
             if (id == null)
                 return BadRequest();
 
-            //var existProduct = await _productService.GetByIdAsync(id);
-
-
-            //var existProduct = await _productService.GetByIdAsync(id);
-
-            //if (existProduct == null)
-            //    return NotFound();
-
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
-                //Retrieve the list of categories, subcategories, brands, and discounts to repopulate the dropdowns
                 var categories = await _context.Categories.ToListAsync();
                 ViewBag.categories = categories.Select(c => new SelectListItem
                 {
@@ -393,103 +283,29 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 return View(model);
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    existProduct.Name = model.Name;
-            //    existProduct.SKUCode = model.SKUCode;
-            //    existProduct.SalesCount = model.SalesCount;
-            //    existProduct.StockCount = model.StockCount;
-            //    existProduct.Price = model.Price;
-            //    existProduct.Description = model.Description;
-            //    existProduct.SubcategoryId = model.SubcategoryId;
-            //    existProduct.CategoryId = model.CategoryId;
-            //    existProduct.DiscountId = model.DiscountId;
-            //    existProduct.BrandId = model.BrandId;
-            //    existProduct.ProductTags = (ICollection<ProductTag>)model.Tags;
-
-            //    //if (model.NewImage?.Count > 0)
-            //    //{
-            //    //    if (!model.NewImage[0].CheckFileType("image/"))
-            //    //    {
-            //    //        ModelState.AddModelError("NewImage", "Please select only an image file");
-            //    //        return View();
-            //    //    }
-
-            //    //    if (model.NewImage[0].CheckFileSize(2000))
-            //    //    {
-            //    //        ModelState.AddModelError("NewImage", "Image size must be a maximum of 200 KB");
-            //    //        return View();
-            //    //    }
-
-            //    //    var imageName = Guid.NewGuid().ToString() + Path.GetExtension(model.NewImage[0].FileName);
-
-            //    //    var imagePath = Path.Combine("wwwroot/images/product", imageName);
-            //    //    using (var fileStream = new FileStream(imagePath, FileMode.Create))
-            //    //    {
-            //    //        await model.NewImage[0].CopyToAsync(fileStream);
-            //    //    }
-
-            //    //    model.ImageName = imageName;
-            //    //}
-            //    if (model.Image?.Count > 0)
-            //    {
-            //        foreach (var item in model.Image)
-            //        {
-            //            if (!item.CheckFileType("image/"))
-            //            {
-            //                ModelState.AddModelError("Image", "Please select only image file");
-            //                return View();
-            //            }
-
-            //            if (item.CheckFileSize(2000))
-            //            {
-            //                ModelState.AddModelError("Image", "Image size must be max 200 KB");
-            //                return View();
-            //            }
-            //        }
-
-            //        //existProduct.Images = model.NewImage;
-            //    }
-
-
-
-
-            //    //if (model.NewImage != null)
-            //    //{
-            //    //    if (!model.NewImage[0].CheckFileType("image/"))
-            //    //    {
-            //    //        ModelState.AddModelError("NewImage", "Please select only an image file");
-            //    //        return View();
-            //    //    }
-
-            //    //    if (model.NewImage[0].CheckFileSize(2000))
-            //    //    {
-            //    //        ModelState.AddModelError("NewImage", "Image size must be a maximum of 200 KB");
-            //    //        return View();
-            //    //    }
-
-            //    //    var imageName = Guid.NewGuid().ToString() + Path.GetExtension(model.NewImage[0].FileName);
-
-            //    //    var imagePath = Path.Combine("wwwroot/images/product", imageName);
-            //    //    using (var fileStream = new FileStream(imagePath, FileMode.Create))
-            //    //    {
-            //    //        await model.NewImage[0].CopyToAsync(fileStream);
-            //    //    }
-
-            //    //    //existProduct.ImageName = imageName;
-            //    //}
-
-
-            //}
-
-
             await _productService.EditAsync(model);
-            //await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
 
 
-            
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Product product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -503,13 +319,12 @@ namespace ASP_FINAL.Areas.Admin.Controllers
 
         private bool IsImageFile(IFormFile file)
         {
-            // Check if the file content type starts with "image/" to ensure it's an image file
             return file.ContentType.StartsWith("image/");
         }
 
         private bool IsChekedTag(int? id, Tag item)
         {
-            if(item.ProductTags != null)
+            if (item.ProductTags != null)
             {
                 foreach (var tag in item.ProductTags)
                 {

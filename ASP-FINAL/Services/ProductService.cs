@@ -172,11 +172,24 @@ namespace ASP_FINAL.Services
         {
             List<ProductImage> images = new List<ProductImage>();
 
-            foreach (var file in model.Image)
+            if (model.Image != null)
             {
-                string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                await file.SaveFileAsync(fileName, _env.WebRootPath, "images/product");
-                images.Add(new ProductImage { Image = fileName, IsMain = false });
+                foreach (var file in model.Image)
+                {
+                    string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    await file.SaveFileAsync(fileName, _env.WebRootPath, "images/product");
+                    images.Add(new ProductImage { Image = fileName, IsMain = false });
+                }
+                var existImage = await _context.ProductImages.ToListAsync();
+
+                foreach (var item in existImage)
+                {
+                    if (item.ProductId == model.Id)
+                    {
+                        _context.Remove(item);
+                    }
+                }
+                await _context.SaveChangesAsync();
             }
 
             if (images.Count > 0)
@@ -213,15 +226,11 @@ namespace ASP_FINAL.Services
                     }
                 }
             }
-            await _context.SaveChangesAsync();
+
+            
 
             foreach (var item in model.Tags)
             {
-
-
-
-
-
                 if (item.IsChecked)
                 {
                     ProductTag productTag = new ProductTag
@@ -229,7 +238,6 @@ namespace ASP_FINAL.Services
                         ProductId = product.Id,
                         TagId = item.Id
                     };
-                    //product.ProductTags.Add(productTag);
                     await _context.ProductTags.AddAsync(productTag);
                 }
             }

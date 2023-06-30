@@ -27,7 +27,7 @@
                 <input type="hidden" asp-for="Id" />
                 
                 <input type="file" asp-for="Image" class="form-control" multiple />
-                <span asp-validation-for="Image" class="text-danger d-block"></span>
+                @*<span asp-validation-for="Image" class="text-danger d-block"></span>*@
 
                 <select class="form-control" asp-for="CategoryId" id="category-select" required>
                     <option value="">Select Category</option>
@@ -41,7 +41,7 @@
                 <span class="text-danger d-block" asp-validation-for="CategoryId"></span>
 
                 <select class="form-control" asp-for="SubcategoryId" id="subcategory-select" required>
-                    <option value="">Select Subcategory</option>
+                    <option>Subcategory (Select Only Corresponding Ones!)</option>
                     @foreach (var subcategory in ViewBag.subcategories)
                     {
                         <option value="@subcategory.Value" selected="@((subcategory.Value == Model.SubcategoryId.ToString()).ToString().ToLower())">@subcategory.Text</option>

@@ -93,7 +93,7 @@ namespace ASP_FINAL.Areas.Admin.Controllers
                 imageName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
 
                 // Save the image to a specified location or a database, depending on your implementation
-                var imagePath = Path.Combine("wwwroot/images/product", imageName);
+                var imagePath = Path.Combine("wwwroot/images/suggest", imageName);
                 using (var fileStream = new FileStream(imagePath, FileMode.Create))
                 {
                     await image.CopyToAsync(fileStream);
@@ -192,18 +192,5 @@ namespace ASP_FINAL.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[ActionName("Delete")]
-        //public async Task<IActionResult> SoftDelete(int id)
-        //{
-        //    var existCategory = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
-
-        //    existCategory.SoftDelete = true;
-
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
     }
 }
