@@ -9,7 +9,7 @@ namespace ASP_FINAL.ViewModels
         public Dictionary<string, string> SettingDatas { get; set; }
         public BlogVM Blog { get; set; }
         public List<Category> Categories { get; set; }
-
+        public int ProductId { get; set; }
 
     }
 }
